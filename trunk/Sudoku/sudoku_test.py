@@ -29,11 +29,11 @@ class SudokuTest(unittest.TestCase):
         3412
         '''
         g = Grid(test_sudoku)
-        expected_col = [Cell({'1'}, 0, 2),
+        expected_row = [Cell({'1'}, 0, 2),
                         Cell({'2'}, 1, 2),
                         Cell({'3'}, 2, 2),
                         Cell({'4'}, 3, 2)]
-        self.assertCellsEqual(g.get_row(2), expected_col)
+        self.assertCellsEqual(g.get_row(2), expected_row)
 
     def test_get_square(self):
         test_sudoku = '''
@@ -43,14 +43,14 @@ class SudokuTest(unittest.TestCase):
         3412
         '''
         g = Grid(test_sudoku)
-        expected_col = [Cell({'3'}, 2, 2),
-                        Cell({'4'}, 3, 2),
-                        Cell({'1'}, 2, 3),
-                        Cell({'2'}, 3, 3)]
-        self.assertCellsEqual(g.get_square(2, 2), expected_col)
-        self.assertCellsEqual(g.get_square(3, 3), expected_col)
-        self.assertCellsEqual(g.get_square(2, 3), expected_col)
-        self.assertCellsEqual(g.get_square(3, 2), expected_col)
+        expected_square = [Cell({'3'}, 2, 2),
+                           Cell({'4'}, 3, 2),
+                           Cell({'1'}, 2, 3),
+                           Cell({'2'}, 3, 3)]
+        self.assertCellsEqual(g.get_square(2, 2), expected_square)
+        self.assertCellsEqual(g.get_square(3, 3), expected_square)
+        self.assertCellsEqual(g.get_square(2, 3), expected_square)
+        self.assertCellsEqual(g.get_square(3, 2), expected_square)
 
     def test_correct_sudoku(self):
         test_sudoku = '''
