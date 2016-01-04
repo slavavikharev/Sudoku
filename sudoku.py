@@ -1,6 +1,6 @@
 import argparse
 from itertools import chain
-from random import randint
+from random import randint, sample
 from re import findall
 from string import ascii_uppercase, digits
 
@@ -188,7 +188,7 @@ class Sudoku:
         if all(c.fixed for c in grid):
             return grid
         c = min((cell for cell in grid if not cell.fixed), key=len)
-        for d in c.values:
+        for d in sample(c.values, c.size):
             new_grid = grid.copy()
             new_grid[c.coord].change_values({d})
             if not new_grid.delete_bad():
