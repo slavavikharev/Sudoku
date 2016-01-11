@@ -1,5 +1,4 @@
 import unittest
-
 from sudoku import *
 
 
@@ -9,10 +8,10 @@ class SudokuTest(unittest.TestCase):
 
     def test_get_col(self):
         test_sudoku = '''
-        2341
-        4123
-        1234
-        3412
+        2.3.4.1
+        4.1.2.3
+        1.2.3.4
+        3.4.1.2
         '''
         g = Grid(test_sudoku)
         expected_col = [Cell({'3'}, 1, 0),
@@ -23,10 +22,10 @@ class SudokuTest(unittest.TestCase):
 
     def test_get_row(self):
         test_sudoku = '''
-        2341
-        4123
-        1234
-        3412
+        2.3.4.1
+        4.1.2.3
+        1.2.3.4
+        3.4.1.2
         '''
         g = Grid(test_sudoku)
         expected_row = [Cell({'1'}, 0, 2),
@@ -37,10 +36,10 @@ class SudokuTest(unittest.TestCase):
 
     def test_get_square(self):
         test_sudoku = '''
-        2341
-        4123
-        1234
-        3412
+        2.3.4.1
+        4.1.2.3
+        1.2.3.4
+        3.4.1.2
         '''
         g = Grid(test_sudoku)
         expected_square = [Cell({'3'}, 2, 2),
@@ -54,45 +53,46 @@ class SudokuTest(unittest.TestCase):
 
     def test_correct_sudoku(self):
         test_sudoku = '''
-        530070000
-        600195000
-        098000060
-        800060003
-        400803001
-        700020006
-        060000280
-        000419005
-        000080079
+        5.3.0.0.7.0.0.0.0
+        6.0.0.1.9.5.0.0.0
+        0.9.8.0.0.0.0.6.0
+        8.0.0.0.6.0.0.0.3
+        4.0.0.8.0.3.0.0.1
+        7.0.0.0.2.0.0.0.6
+        0.6.0.0.0.0.2.8.0
+        0.0.0.4.1.9.0.0.5
+        0.0.0.0.8.0.0.7.9
         '''
         grid = Grid(test_sudoku)
+        print(grid)
         self.assertTrue(grid.check_correct())
 
     def test_incorrect_sudoku(self):
         test_sudoku = '''
-        530070005
-        600195000
-        098000060
-        800060003
-        400803001
-        700020006
-        060000280
-        000419005
-        000080079
+        5.3.0.0.7.0.0.0.5
+        6.0.0.1.9.5.0.0.0
+        0.9.8.0.0.0.0.6.0
+        8.0.0.0.6.0.0.0.3
+        4.0.0.8.0.3.0.0.1
+        7.0.0.0.2.0.0.0.6
+        0.6.0.0.0.0.2.8.0
+        0.0.0.4.1.9.0.0.5
+        0.0.0.0.8.0.0.7.9
         '''
         grid = Grid(test_sudoku)
         self.assertFalse(grid.check_correct())
 
     def test_correct_empty(self):
         test_sudoku = '''
-        000000000
-        000000000
-        000000000
-        000000000
-        000000000
-        000000000
-        000000000
-        000000000
-        000000000
+        0.0.0.0.0.0.0.0.0
+        0.0.0.0.0.0.0.0.0
+        0.0.0.0.0.0.0.0.0
+        0.0.0.0.0.0.0.0.0
+        0.0.0.0.0.0.0.0.0
+        0.0.0.0.0.0.0.0.0
+        0.0.0.0.0.0.0.0.0
+        0.0.0.0.0.0.0.0.0
+        0.0.0.0.0.0.0.0.0
         '''
         grid = Grid(test_sudoku)
         self.assertTrue(grid.check_correct())
@@ -116,31 +116,22 @@ class SudokuTest(unittest.TestCase):
 
     def test_huge_sudoku(self):
         he = '''
-        0G0VCUB0TPR0EXOIA00Y0HKJ0
-        0S000O0KV0AH000MU00P0000N
-        00KN000R0AL00Y0C0QW0M000U
-        EYB0QM0W0HI0JU00KS0L00000
-        RAUD0GQ000000T00X0V00LWPO
-        0E0G0TF0P00YALJ0000K0X00S
-        0FR0T000BGEVKQ0S0XJC0000D
-        00SY0V0E00000RCG0P0B00OFJ
-        L0000D000SFTG0N00VO0C00HB
-        BVCJDLRM00000OHW00YAP00G0
-        VCW0PAYFH00ET00000SD0Q0OL
-        A00U00C00XYJ00V000KFNDMW0
-        H0D0JPL0K000N000G0IVF0C0E
-        0LGENSM000C00IXQ00A00V00T
-        KB0F0EW00000SH00TCMUY0PAG
-        0K00VIU00DHQ00000FTEOPLSX
-        QT00U0GP00V0RDFN000I0000A
-        IPH00X0Q0ENM00000B0J0RU00
-        G0000HTN0J0IUEAVP000W0FQ0
-        D00L0K0000OPXJ00M0QH0C0N0
-        FNEB00K0G00X000000PM0YSRW
-        00000W0UY00LH0RF0I0GV0NXP
-        U000I0PH0O0G00YD0K000FT00
-        S0000J00EF000MK0RN0Q000L0
-        0RPO0N00QMDUC0EAY0XWJI0K0
+        16.7.8.0.1.0.11.0.5.14.9.4.12.0.15.0
+        2.10.5.0.0.0.12.0.0.13.6.16.1.3.7.8
+        0.0.0.0.5.0.0.0.8.7.0.0.0.14.2.16
+        14.15.1.0.0.0.8.7.0.2.0.12.0.11.0.0
+        15.2.11.0.0.0.9.0.4.0.0.0.13.0.0.3
+        0.3.0.9.15.11.16.0.0.6.10.8.0.12.4.7
+        0.16.7.0.4.0.1.0.0.0.0.13.6.8.9.14
+        0.8.0.0.0.0.13.0.0.9.0.1.0.0.10.11
+        0.0.0.0.11.0.10.15.13.4.0.3.0.0.1.2
+        0.1.10.0.0.0.2.0.9.0.16.6.14.4.12.5
+        0.0.0.16.0.0.6.5.0.0.0.2.0.0.0.13
+        0.0.15.2.8.0.14.4.0.1.0.7.11.0.0.10
+        10.0.12.0.0.8.0.1.0.16.0.0.0.0.0.0
+        0.11.0.0.10.0.0.6.0.3.2.15.0.0.13.0
+        0.14.0.1.9.15.0.0.0.8.0.10.3.6.11.0
+        9.0.0.15.0.12.7.0.6.0.0.14.16.10.8.1
         '''
         s = Sudoku(he)
         s.solve()
