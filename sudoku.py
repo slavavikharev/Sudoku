@@ -1,8 +1,6 @@
 import argparse
 from itertools import chain
 from random import randint, sample
-from re import findall
-from string import ascii_uppercase, digits
 
 __all__ = ['Cell', 'Grid', 'Sudoku']
 
@@ -18,7 +16,7 @@ class Cell:
         self.fixed = self.size == 1
 
     def __str__(self):
-        return ''.join(self.values)
+        return ','.join(self.values)
 
     def __len__(self):
         return self.size
@@ -46,31 +44,24 @@ class Cell:
 class Grid:
     def __init__(self, values=None):
         """
-        :type values: str
+        :type values: str list
         """
         if values is None:
             return
-        values = ''.join(row.strip() for row in values.splitlines())
+        values = values.strip().strip('.').replace('\n', '.')
+        values = [val.strip() for val in values.split('.')]
         n = len(values) ** .25
         if not n.is_integer():
             raise ValueError("The count of elements should be square")
         self.n = int(n) ** 2
-        if self.n == 9 or self.n == 4:
-            self.digits = digits[1:][:self.n]
-        elif self.n == 16:
-            self.digits = (digits[1:] + ascii_uppercase)[:self.n]
-        elif self.n == 25:
-            self.digits = ascii_uppercase[:self.n]
-        else:
-            raise ValueError("Only 9x9, 16x16 or 25x25 sudoku")
-        self.digits = set(self.digits)
+        self.digits = set(map(str, range(1, self.n + 1)))
+        values = [values[i*self.n:(i+1)*self.n] for i in range(self.n)]
         self._grid = [[Cell({cell} if cell not in '.0' else self.digits, x, y)
                        for x, cell in enumerate(row)]
-                      for y, row in enumerate(findall('.' * self.n, values))]
+                      for y, row in enumerate(values)]
 
     def __str__(self):
-        return '\n'.join(' '.join([str(cell) for cell in row])
-                         for row in self._grid)
+        return '\n'.join(' '.join(map(str, row)) for row in self._grid)
 
     def __getitem__(self, indexes):
         """
@@ -169,8 +160,7 @@ class Sudoku:
         :type values: str
         """
         self.grid = Grid(values)
-        if not self.grid.check_correct() or \
-                not self.grid.delete_bad():
+        if not self.grid.check_correct() or not self.grid.delete_bad():
             raise ValueError("Sudoku is not correct")
 
     def __str__(self):
@@ -204,8 +194,8 @@ class Sudoku:
         """
         if not all(c.fixed for c in self.grid):
             raise ValueError("Sudoku must be solved")
-        return ''.join(str(cell) if randint(0, 1) else '0'
-                       for cell in self.grid)
+        return '.'.join(str(cell) if randint(0, 1) else '0'
+                        for cell in self.grid)
 
     @staticmethod
     def random(n):
@@ -214,7 +204,7 @@ class Sudoku:
         sudoku with size 'n'
         :param n:
         """
-        sudoku = Sudoku('0' * n ** 2)
+        sudoku = Sudoku(('0.' * n ** 2)[:-1])
         sudoku.solve()
         return sudoku.desolve()
 
@@ -226,7 +216,7 @@ if __name__ == '__main__':
                         help='solve from file', type=str)
     parser.add_argument('--many', action='store_true',
                         help='solve all sudoku from file')
-    parser.add_argument('--random', metavar='N', choices={4, 9, 16, 25},
+    parser.add_argument('--random', metavar='N',
                         help='generate sudoku NxN', type=int)
     args = parser.parse_args()
 
